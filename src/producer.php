@@ -11,6 +11,7 @@ echo "Using kafka broker $brokers to send $msglimit on topic $topic<br>\n";
 $conf = new RdKafka\Conf();
 $conf->set('log_level', (string) LOG_DEBUG);
 $conf->set('debug', 'all');
+$conf->set('bootstrap.servers', "$brokers");
 $rk = new RdKafka\Producer($conf);
 $rk->addBrokers("$brokers");
 $topic = $rk->newTopic("$topic");
@@ -21,7 +22,10 @@ $count=0;
 $time_start = microtime(true);
 for($x=0;$x<$msglimit;$x++) {
 	$dttm = microtime(true);
-	$topic->produce(RD_KAFKA_PARTITION_UA, 0, "$dttm: Message payload $x");
+	$mensagem = "$dttm: Message payload $x";
+	echo "Produzindo mensagem $mensagem\n";
+	$topic->produce(RD_KAFKA_PARTITION_UA, 0, "$mensagem");
+	
 	//var_dump($topic);
 }
 $time_end = microtime(true);
