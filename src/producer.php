@@ -11,6 +11,7 @@ echo "Using kafka broker $brokers to send $msglimit on topic $topic<br>\n";
 $conf = new RdKafka\Conf();
 $conf->set('log_level', (string) LOG_DEBUG);
 $conf->set('debug', 'all');
+$conf->set('acks', 0);
 $conf->set('bootstrap.servers', "$brokers");
 $rk = new RdKafka\Producer($conf);
 $rk->addBrokers("$brokers");
