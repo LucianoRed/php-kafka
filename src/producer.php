@@ -16,8 +16,8 @@ echo "Using kafka broker $brokers to send $msglimit on topic $topic<br>\n";
 $conf = new RdKafka\Conf();
 $conf->set('metadata.broker.list', $brokers);
 $conf->set('acks', $acks);
-$conf->set('log_level', (string) LOG_DEBUG);
-$conf->set('debug', 'all');
+//$conf->set('log_level', (string) LOG_DEBUG);
+//$conf->set('debug', 'all');
 
 //If you need to produce exactly once and want to keep the original produce order, uncomment the line below
 //$conf->set('enable.idempotence', 'true');
