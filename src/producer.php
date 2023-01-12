@@ -25,6 +25,7 @@ for ($i = 0; $i < $msglimit; $i++) {
     $topic->produce(RD_KAFKA_PARTITION_UA, 0, "$dttm: Message payload $i");
     $producer->poll(0);
 }
+$time_end = microtime(true);
 $time = $time_end - $time_start;
 echo "Produced $msglimit messages in $time seconds!<br>\n";
 
@@ -35,6 +36,7 @@ for ($flushRetries = 0; $flushRetries < $msglimit; $flushRetries++) {
         break;
     }
 }
+$time_end = microtime(true);
 $time = $time_end - $time_start;
 echo "Flushed retries $msglimit messages in $time seconds!<br>\n";
 
