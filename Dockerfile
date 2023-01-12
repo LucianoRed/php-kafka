@@ -1,0 +1,33 @@
+FROM php:7.4.33-apache
+
+RUN apt-get -y update && apt-get clean && \
+    apt-get install -y vim \
+    libonig-dev \
+    libicu-dev \
+    libzip-dev \
+    librdkafka-dev \
+    git \
+    rsyslog && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-install mysqli && \
+    docker-php-ext-enable mysqli && \
+    docker-php-ext-install mbstring && \
+    docker-php-ext-install exif && \
+    docker-php-ext-install intl && \
+    docker-php-ext-install zip && \
+    pecl install rdkafka && \
+    docker-php-ext-install -j$(nproc) iconv && \
+    rm -r /tmp/* /var/cache/* && rm -rf /var/lib/apt/lists/*
+
+COPY DockerConfigFiles/apache2.conf /etc/apache2/apache2.conf
+COPY DockerConfigFiles/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY DockerConfigFiles/ports.conf /etc/apache2/ports.conf
+COPY DockerConfigFiles/php.ini /usr/local/etc/php/
+RUN a2enmod remoteip && a2enmod headers
+RUN chown 12345 /var/www/html && mkdir /logs && chmod 777 /logs
+
+
+EXPOSE 8080
+
+USER 12345
