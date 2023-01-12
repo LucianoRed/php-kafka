@@ -1,7 +1,11 @@
 <?php
 $brokers = getenv("KAFKA_BROKERS");
 $topic = getenv("KAFKA_TOPIC");
-
+if(isset($_GET['messages'])) {
+	$msglimit = intval($_GET['messages']);
+} else {
+	$msglimit = 100;	
+}
 $conf = new RdKafka\Conf();
 $conf->set('log_level', (string) LOG_DEBUG);
 $conf->set('debug', 'all');
