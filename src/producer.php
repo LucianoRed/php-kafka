@@ -31,7 +31,7 @@ for ($i = 0; $i < $msglimit; $i++) {
             $producer->poll(0);
             $result = $producer->flush(10000);
             if (RD_KAFKA_RESP_ERR_NO_ERROR === $result) {
-                echo "Message $i ok";
+              //  echo "Message $i ok";
             }
         if (RD_KAFKA_RESP_ERR_NO_ERROR !== $result) {
             throw new \RuntimeException('Was unable to flush, messages might be lost!');
