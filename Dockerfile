@@ -26,7 +26,7 @@ COPY DockerConfigFiles/ports.conf /etc/apache2/ports.conf
 COPY DockerConfigFiles/php.ini /usr/local/etc/php/
 RUN a2enmod remoteip && a2enmod headers
 RUN chown 12345 /var/www/html && mkdir /logs && chmod 777 /logs
-
+ADD src/ /var/www/html/
 
 EXPOSE 8080
 
