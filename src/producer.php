@@ -25,6 +25,7 @@ $conf->set('debug', 'all');
 $producer = new RdKafka\Producer($conf);
 
 $ctopic = $producer->newTopic("$topic");
+$time_start = microtime(true);
 
 for ($i = 0; $i < $msglimit; $i++) {
     $ctopic->produce(RD_KAFKA_PARTITION_UA, 0, "Message $i");
@@ -37,5 +38,8 @@ for ($i = 0; $i < $msglimit; $i++) {
             throw new \RuntimeException('Was unable to flush, messages might be lost!');
         }
 }
+$time_end = microtime(true);
+$time = $time_end - $time_start;
+echo "Produced $msglimit messages in $time seconds<br>\n";
 
 ?>
