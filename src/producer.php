@@ -6,6 +6,7 @@ if(isset($_GET['messages'])) {
 } else {
 	$msglimit = 100;	
 }
+echo "Using kafka broker $brokers to send $msglimit on topic $topic<br>\n";
 $conf = new RdKafka\Conf();
 $conf->set('log_level', (string) LOG_DEBUG);
 $conf->set('debug', 'all');
@@ -20,11 +21,11 @@ $time_start = microtime(true);
 for($x=0;$x<$msglimit;$x++) {
 	$dttm = microtime(true);
 	$topic->produce(RD_KAFKA_PARTITION_UA, 0, "$dttm: Message payload $x");
-	var_dump($topic);
+	//var_dump($topic);
 }
 $time_end = microtime(true);
 $time = $time_end - $time_start;
-echo "Produced $msglimit messages in $time seconds!";
+echo "Produced $msglimit messages in $time seconds!<br>\n";
 $rk->flush($timeout_ms);
 $rk->purge(RD_KAFKA_PURGE_F_QUEUE);
 $rk->flush($timeout_ms);
