@@ -6,6 +6,9 @@ $consumer_group = getenv("KAFKA_CONSUMER_GROUP");
 if($consumer_group == "") {
         $consumer_group = "phpKafkaTester";
 } 
+if($topic == "") {
+        $topic = "phpKafkaTester";
+} 
 $conf = new RdKafka\Conf();
 
 // Set a rebalance callback to log partition assignments (optional)
