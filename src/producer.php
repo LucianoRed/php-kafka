@@ -20,6 +20,11 @@ if(isset($_GET['batchsize'])) {
         $conf->set('batch.size', $bs);
 
 }
+if(isset($_GET['linger'])) {
+        $linger = intval($_GET['linger']);
+        $conf->set('linger.ms', $linger);
+
+}
 $conf->set('acks', $acks);
 //$conf->set('log_level', (string) LOG_DEBUG);
 //$conf->set('debug', 'all');
