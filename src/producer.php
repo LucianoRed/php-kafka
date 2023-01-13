@@ -7,7 +7,7 @@ if(isset($_GET['messages'])) {
         $msglimit = 10;
 }
 if(isset($_GET['acks'])) {
-        $acks = intval($_GET['acks']);
+        $acks = -1;
 } else {
         $acks = 0;
 }
