@@ -15,6 +15,11 @@ echo "Using kafka broker $brokers to send $msglimit on topic $topic<br>\n";
 
 $conf = new RdKafka\Conf();
 $conf->set('metadata.broker.list', $brokers);
+if(isset($_GET['batchsize'])) {
+        $bs = intval($_GET['batchsize']);
+        $conf->set('batch.size', $bs);
+
+}
 $conf->set('acks', $acks);
 //$conf->set('log_level', (string) LOG_DEBUG);
 //$conf->set('debug', 'all');
