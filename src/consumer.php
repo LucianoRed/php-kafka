@@ -2,6 +2,7 @@
 $brokers = getenv("KAFKA_BROKERS");
 $topic = getenv("KAFKA_TOPIC");
 $consumer_group = getenv("KAFKA_CONSUMER_GROUP");
+$debug = getenv("DEBUG");
 
 if($consumer_group == "") {
         $consumer_group = "phpKafkaTester";
@@ -58,7 +59,9 @@ while (true) {
     $message = $consumer->consume(120*1000);
     switch ($message->err) {
         case RD_KAFKA_RESP_ERR_NO_ERROR:
-            var_dump($message);
+            if($debug == "S") {
+               var_dump($message);
+            }
             break;
         case RD_KAFKA_RESP_ERR__PARTITION_EOF:
             echo "No more messages; will wait for more\n";
