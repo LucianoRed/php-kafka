@@ -1,0 +1,40 @@
+FROM php:7.4.33-apache
+
+RUN apt-get -y update && apt-get clean && \
+    apt-get install -y vim \
+    libonig-dev \
+    libicu-dev \
+    libzip-dev \
+    librdkafka-dev \
+    openjdk-11-jdk \
+    wget \
+    git \
+    rsyslog && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-install mysqli && \
+    docker-php-ext-enable mysqli && \
+    docker-php-ext-install mbstring && \
+    docker-php-ext-install exif && \
+    docker-php-ext-install intl && \
+    docker-php-ext-install zip && \
+    pecl install rdkafka && \
+    docker-php-ext-install -j$(nproc) iconv && \
+    rm -r /tmp/* /var/cache/* && rm -rf /var/lib/apt/lists/*
+
+COPY DockerConfigFiles/apache2.conf /etc/apache2/apache2.conf
+COPY DockerConfigFiles/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY DockerConfigFiles/ports.conf /etc/apache2/ports.conf
+COPY DockerConfigFiles/php.ini /usr/local/etc/php/
+COPY DockerConfigFiles/entrypoint-producer.sh /tmp/entrypoint-producer.sh
+RUN a2enmod remoteip && a2enmod headers
+RUN chown 12345 /var/www/html && mkdir /logs && chmod 777 /logs && chmod 755 /tmp/entrypoint-producer.sh
+ADD src/ /var/www/html/
+# Kafka stuff
+RUN cd /tmp && wget https://downloads.apache.org/kafka/3.3.2/kafka_2.13-3.3.2.tgz && tar -zxvf kafka_2.13-3.3.2.tgz && mv kafka_2.13-3.3.2 /opt/kafka
+
+EXPOSE 8080
+
+ENTRYPOINT [ "/tmp/entrypoint-producer.sh" ]
+
+USER 12345
