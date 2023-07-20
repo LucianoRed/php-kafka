@@ -79,9 +79,11 @@ while (true) {
           $newJsonMessage = json_encode($messageArray);
           
           // Output the updated JSON message to elasticsearch
-          $cmd = "curl -tls1.2 -s -k --cert /etc/elasticsearch/secret/admin-cert   --key /etc/elasticsearch/secret/admin-key -kv -X POST "https://$elasticsearch_address:9200/app-$app_number/_doc" -H 'Content-Type: application/json' -d '$newJsonMessage'";
-          exec($cmd);
-      
+          //$cmd = "curl -tls1.2 -s -k --cert /etc/elasticsearch/secret/admin-cert   --key /etc/elasticsearch/secret/admin-key -kv -X POST "https://$elasticsearch_address:9200/app-$app_number/_doc" -H 'Content-Type: application/json' -d '$newJsonMessage'";
+          //exec($cmd);
+            echo $newJsonMessage;
+                    
+
             break;
         case RD_KAFKA_RESP_ERR__PARTITION_EOF:
             echo "No more messages; will wait for more\n";
