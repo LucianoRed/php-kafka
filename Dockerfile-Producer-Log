@@ -32,7 +32,7 @@ RUN a2enmod remoteip && a2enmod headers
 RUN chown 12345 /var/www/html && mkdir /logs && chmod 777 /logs && chmod 755 /tmp/entrypoint-producer-log.sh
 ADD src/ /var/www/html/
 # Kafka stuff
-RUN cd /tmp && wget https://downloads.apache.org/kafka/3.3.2/kafka_2.13-3.3.2.tgz && tar -zxvf kafka_2.13-3.3.2.tgz && mv kafka_2.13-3.3.2 /opt/kafka
+RUN cd /tmp && wget https://downloads.apache.org/kafka/3.5.0/kafka_2.13-3.5.0.tgz && tar -zxvf kafka_2.13-3.5.0.tgz && mv kafka_2.13-3.5.0 /opt/kafka
 
 EXPOSE 8080
 
