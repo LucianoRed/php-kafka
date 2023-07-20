@@ -81,7 +81,7 @@ while (true) {
           // Output the updated JSON message to elasticsearch
           //$cmd = "curl -tls1.2 -s -k --cert /etc/elasticsearch/secret/admin-cert   --key /etc/elasticsearch/secret/admin-key -kv -X POST "https://$elasticsearch_address:9200/app-$app_number/_doc" -H 'Content-Type: application/json' -d '$newJsonMessage'";
           //exec($cmd);
-            echo $newJsonMessage;
+            error_log($newJsonMessage);
                     
 
             break;
