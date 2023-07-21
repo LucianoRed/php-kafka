@@ -60,14 +60,33 @@ while (true) {
     switch ($message->err) {
         case RD_KAFKA_RESP_ERR_NO_ERROR:
         
-        $jsonMessage = $message->payload;
+            $jsonMessage = $message->payload;
                       
-        $messageArray = json_decode($jsonMessage, true);
-        $Objeto = json_decode($jsonMessage);
-        $departamento = getenv("DEPARTAMENTO");
-        if($Objeto->departamento == "$departamento") {
-            error_log($jsonMessage);
-        }
+            $messageArray = json_decode($jsonMessage, true);
+            $Objeto = json_decode($jsonMessage, true);
+            //print_r($Objeto);
+            $departamento = getenv("DEPARTAMENTO");
+            // if($Objeto['departamento'] == "$departamento") {
+            //     error_log($jsonMessage);
+            // }
+            $ObjAdditional = $Objeto['additional-data'];
+            $tempo_execucao = intval($ObjAdditional['tempo-execucao-endpoint-ms']);
+            //echo "Transacao levou $tempo_execucao\n";
+            $limite_tempo = getenv("LIMITE_TEMPO");
+            if($limite_tempo == "") {
+                    $limite_tempo = 110;
+            }
+            if($tempo_execucao > $limite_tempo) {
+                    error_log("LIMITE DE TEMPO EXCEDIDO");
+                    error_log($jsonMessage);
+            }
+            // Add the new object
+            //    $messageArray['kubernetes'] = array(
+            //        'namespace_name' => "$departamento"
+            //    );
+    
+            // Encode the modified array back to JSON
+            $newJsonMessage = json_encode($messageArray);
 
         // Add the new object
         //    $messageArray['kubernetes'] = array(
