@@ -65,7 +65,7 @@ while (true) {
         $messageArray = json_decode($jsonMessage, true);
         $Objeto = json_decode($jsonMessage);
         $departamento = getenv("DEPARTAMENTO");
-        if($Objeto->departamento == "departamento-a") {
+        if($Objeto->departamento == "$departamento") {
             error_log($jsonMessage);
         }
 
