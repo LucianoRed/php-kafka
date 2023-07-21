@@ -59,31 +59,24 @@ while (true) {
     $message = $consumer->consume(120*1000);
     switch ($message->err) {
         case RD_KAFKA_RESP_ERR_NO_ERROR:
-            if($debug == "S") {
-                echo "Antes mensagem\n";
-                var_dump($message);
-                echo "depois mensagem\n";
-            }
-           
+        
+        $jsonMessage = $message->payload;
+                      
+        $messageArray = json_decode($jsonMessage, true);
+        $Objeto = json_decode($jsonMessage);
+        $departamento = getenv("DEPARTAMENTO");
+        if($Objeto->departamento == "departamento-a") {
+            error_log($jsonMessage);
+        }
 
-         $jsonMessage = $message->payload;
-         //echo $jsonMessage;
-       
-       // Decode JSON into an associative array
-       $messageArray = json_decode($jsonMessage, true);
-       
-       // Add the new object
-    //    $messageArray['kubernetes'] = array(
-    //        'namespace_name' => "$departamento"
-    //    );
-       
-       // Encode the modified array back to JSON
-       $newJsonMessage = json_encode($messageArray);
-       
-       // Output the updated JSON message to elasticsearch
-       //$cmd = "curl -tls1.2 -s -k --cert /etc/elasticsearch/secret/admin-cert   --key /etc/elasticsearch/secret/admin-key -kv -X POST "https://$elasticsearch_address:9200/app-$app_number/_doc" -H 'Content-Type: application/json' -d '$newJsonMessage'";
-       //exec($cmd);
-         error_log($newJsonMessage);
+        // Add the new object
+        //    $messageArray['kubernetes'] = array(
+        //        'namespace_name' => "$departamento"
+        //    );
+
+        // Encode the modified array back to JSON
+        $newJsonMessage = json_encode($messageArray);
+
                  
             break;
         case RD_KAFKA_RESP_ERR__PARTITION_EOF:
